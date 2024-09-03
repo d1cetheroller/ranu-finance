@@ -51,6 +51,12 @@ pub struct Initialize<'info> {
 #[derive(Accounts)]
 pub struct Pool<'info> {
     #[account(
+        seeds = [RanuConfig::SEED.as_bytes()],
+        bump
+    )]
+    pub ranu_config: Box<Account<'info, RanuConfig>>,
+
+    #[account(
         init,
         space = VaultPool::ACCOUNT_SIZE,
         seeds = [VaultPool::POOL_SEED.as_bytes(), token_mint.key().as_ref()],
@@ -79,9 +85,9 @@ pub struct Pool<'info> {
         init_if_needed,
         payer = user,
         associated_token::mint = token_mint,
-        associated_token::authority = user,
+        associated_token::authority = pool
     )]
-    pub pool_token_account: Account<'info, TokenAccount>,
+    pub pool_token_account: Box<Account<'info, TokenAccount>>,
 
     #[account(mut)]
     pub user: Signer<'info>,
