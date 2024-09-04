@@ -3,7 +3,11 @@ use anchor_lang::prelude::*;
 use crate::state::config::RanuConfig;
 
 pub fn initialize(ctx: Context<Initialize>, fee: u64) -> Result<()> {
+    let authority = ctx.accounts.user.key();
+
     ctx.accounts.ranu_config.fee = fee;
+    ctx.accounts.ranu_config.authority = authority;
+
     Ok(())
 }
 

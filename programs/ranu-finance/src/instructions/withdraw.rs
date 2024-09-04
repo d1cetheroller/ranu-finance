@@ -4,7 +4,11 @@ use anchor_spl::token::{Mint, Token};
 use crate::state::{config::RanuConfig, pool::VaultPool};
 
 pub fn withdraw(ctx: Context<Withdraw>, sol_amount: u64) -> Result<()> {
+    let user = ctx.accounts.user.key();
+    let authority = ctx.accounts.ranu_config.authority.key();
     let pool = &mut ctx.accounts.pool;
+
+    require!(user == authority, ErrorCode::InvalidAuthority);
 
     pool.withdraw(
         sol_amount,
@@ -43,6 +47,13 @@ pub struct Withdraw<'info> {
 
     #[account(mut)]
     pub user: Signer<'info>,
+
     pub token_program: Program<'info, Token>,
     pub system_program: Program<'info, System>,
+}
+
+#[error_code]
+pub enum ErrorCode {
+    #[msg("Invalid Authority")]
+    InvalidAuthority,
 }
