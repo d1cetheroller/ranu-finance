@@ -15,7 +15,7 @@ pub mod ranu_finance {
         instructions::initialize(ctx, fee)
     }
 
-    pub fn create_pool(ctx: Context<Pool>, max_cap: u64) -> Result<()> {
+    pub fn create_pool(ctx: Context<CreatePool>, max_cap: u64) -> Result<()> {
         instructions::create_pool(ctx, max_cap)
     }
 

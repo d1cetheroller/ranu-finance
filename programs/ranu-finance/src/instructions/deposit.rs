@@ -41,7 +41,7 @@ pub struct Deposit<'info> {
     /// CHECK:
     #[account(
         mut,
-        seeds = [VaultPool::SOL_POOL_SEED.as_bytes(), token_mint.key().as_ref()],
+        seeds = [VaultPool::SOL_VAULT_SEED.as_bytes(), token_mint.key().as_ref()],
         bump
     )]
     pub pool_sol_vault: AccountInfo<'info>,

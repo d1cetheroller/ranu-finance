@@ -18,7 +18,7 @@ pub struct VaultPool {
 impl VaultPool {
     pub const POOL_SEED: &'static str = "VaultPool";
 
-    pub const SOL_POOL_SEED: &'static str = "SolVaultPool";
+    pub const SOL_VAULT_SEED: &'static str = "SolVaultPool";
 
     pub const ACCOUNT_SIZE: usize = 8 + 8 + 8 + 32 + 1 + 1 + 1;
 
@@ -38,7 +38,7 @@ impl VaultPool {
         amount: u64,
         from: &Signer<'info>,
         pool: &AccountInfo<'info>,
-        pool_vault: &mut AccountInfo<'info>,
+        sol_vault: &mut AccountInfo<'info>,
         token_mint: &Account<'info, Mint>,
         user_token_account: &Account<'info, TokenAccount>,
         system_program: &Program<'info, System>,
@@ -59,7 +59,7 @@ impl VaultPool {
                 system_program.to_account_info(),
                 system_program::Transfer {
                     from: from.to_account_info(),
-                    to: pool_vault.to_account_info(),
+                    to: sol_vault.to_account_info(),
                 },
             ),
             amount,
@@ -91,12 +91,12 @@ impl VaultPool {
     pub fn withdraw<'info>(
         &mut self,
         amount: u64,
-        pool_vault: &mut AccountInfo<'info>,
+        sol_vault: &mut AccountInfo<'info>,
         to: &AccountInfo<'info>,
         system_program: &Program<'info, System>,
     ) -> Result<()> {
         let seeds = &[
-            VaultPool::SOL_POOL_SEED.as_bytes(),
+            VaultPool::SOL_VAULT_SEED.as_bytes(),
             &self.token_mint.to_bytes(),
             &[self.sol_vault_bump],
         ];
@@ -106,7 +106,7 @@ impl VaultPool {
             CpiContext::new_with_signer(
                 system_program.to_account_info(),
                 system_program::Transfer {
-                    from: pool_vault.to_account_info(),
+                    from: sol_vault.to_account_info(),
                     to: to.to_account_info(),
                 },
                 signer,
