@@ -85,6 +85,8 @@ impl VaultPool {
             amount,
         )?;
 
+        self.total_deposits += amount;
+
         Ok(())
     }
 
