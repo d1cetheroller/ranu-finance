@@ -33,6 +33,7 @@ pub struct Deposit<'info> {
     pub ranu_config: Box<Account<'info, RanuConfig>>,
 
     #[account(
+        mut,
         seeds = [VaultPool::POOL_SEED.as_bytes(), token_mint.key().as_ref()],
         bump = pool.pool_bump
     )]
