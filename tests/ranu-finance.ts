@@ -109,6 +109,9 @@ describe("ranu-finance", () => {
 
     const solBalance = await connection.getBalance(program.provider.publicKey);
     console.log("Sol balance after deposit: ", solBalance / 10 ** 9, "SOL");
+
+    let poolState = await program.account.vaultPool.fetch(pool);
+    console.log("Pool State : ", poolState);
   });
 
   it("Withdraw", async () => {
@@ -143,5 +146,8 @@ describe("ranu-finance", () => {
 
     const solBalance = await connection.getBalance(program.provider.publicKey);
     console.log("Sol balance after withdraw: ", solBalance / 10 ** 9, "SOL");
+
+    let poolState = await program.account.vaultPool.fetch(pool);
+    console.log("Pool State : ", poolState);
   });
 });
